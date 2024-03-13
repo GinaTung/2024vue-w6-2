@@ -33,5 +33,7 @@ module.exports = {
     'vue',
   ],
   rules: {
+    'no-console': 'off',
+    'no-alert': 'off',
   },
 };
