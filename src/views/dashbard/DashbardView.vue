@@ -5,6 +5,7 @@
       <RouterLink to="/admin/products">產品列表</RouterLink> |
       <RouterLink to="/admin/order">訂單列表</RouterLink> |
       <RouterLink to="/">回到前台</RouterLink> |
+      <a href="#" @click.prevent="signout">登出</a>
     </nav>
     <router-view></router-view>
   </div>
@@ -31,17 +32,27 @@ export default {
         '$1',
       );
       axios.defaults.headers.common.Authorization = token;
-      axios
-        .post(`${VITE_APP_API_URL}/api/user/check`)
-        .then(() => {
-          // console.log(res);
-          //   this.getProducts();
-        })
-        .catch(() => {
-          // console.log(err);
-          //   alert(`${err.response.data.message}`);
-          this.$router.push('/login');
-        });
+      if (token) {
+        axios
+          .post(`${VITE_APP_API_URL}/api/user/check`)
+          .then(() => {
+            // console.log(res);
+            //   this.getProducts();
+          })
+          .catch(() => {
+            // console.log(err);
+            //   alert(`${err.response.data.message}`);
+            this.$router.push('/login');
+          });
+      } else {
+        alert('您尚未登入。');
+        this.$router.push('/login');
+      }
+    },
+    signout() {
+      document.cookie = 'hexToken=;expires=;';
+      alert('token 已清除');
+      this.$router.push('/login');
     },
   },
   mounted() {

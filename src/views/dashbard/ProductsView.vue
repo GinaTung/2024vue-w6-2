@@ -1,5 +1,5 @@
 <template>
-
+ <VueLoading :active="isLoading"  class="text-center" />
     <div class="text-end mt-4">
       <button
         class="btn btn-primary"
@@ -91,10 +91,12 @@ export default {
       modalProduct: null, // productModal
       modalDel: null, // delProductModal
       isNew: false,
+      isLoading: false,
     };
   },
   methods: {
     getProducts(page = 1) { // 參數預設值
+      this.isLoading = true;
       // 有分頁
       axios
         .get(`${VITE_APP_API_URL}/api/${VITE_APP_API_NAME}/admin/products?page=${page}`)
@@ -102,6 +104,7 @@ export default {
           console.log(res);
           this.products = res.data.products;
           this.pages = res.data.pagination;
+          this.isLoading = false;
         })
         .catch((err) => {
           alert(`${err.response.data.message}`);
